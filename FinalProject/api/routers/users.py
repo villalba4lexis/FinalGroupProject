@@ -22,3 +22,47 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+# Read All Users
+@router.get("/", response_model=list[UserRead])
+def read_all_users(db: Session = Depends(get_db)):
+    return db.query(User).all()
+
+# Read User by ID
+@router.get("/{user_id}", response_model=UserRead)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found."
+        )
+    return user
+
+# Update User
+@router.put("/{user_id}", response_model=UserRead)
+def update_user(user_id: int, updated_user: UserCreate, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found."
+        )
+    user.name = updated_user.name
+    user.email = updated_user.email
+    db.commit()
+    db.refresh(user)
+    return user
+
+# Delete User
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found."
+        )
+    db.delete(user)
+    db.commit()
+    return None
