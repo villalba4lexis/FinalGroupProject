@@ -22,3 +22,4 @@ class Order(Base):
     tracking_number = Column(String(50), unique=True)
 
     order_details = relationship("OrderDetail", back_populates="order")
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)

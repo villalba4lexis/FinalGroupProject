@@ -1,18 +1,12 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
-from typing import Optional
+from pydantic import BaseModel, ConfigDict
 
 class UserBase(BaseModel):
     name: str
-    email: EmailStr
+    email: str
 
 class UserCreate(UserBase):
     pass
 
-class UserUpdate(BaseModel):
-    name: Optional[str] = None
-    email: Optional[EmailStr] = None
-
-class UserOut(UserBase):
+class UserRead(UserBase):
     id: int
-
     model_config = ConfigDict(from_attributes=True)

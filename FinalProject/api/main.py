@@ -15,6 +15,7 @@ from .routers import (
     reviews as reviews_router,
     orders as orders_router,
     order_details as order_details_router,
+    users as users_router,
 )
 
 app = FastAPI()
@@ -41,6 +42,7 @@ resources_router.load_routes(app)
 app.include_router(reviews_router.router)
 app.include_router(orders_router.router)
 app.include_router(order_details_router.router)
+app.include_router(users_router.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host=conf.app_host, port=conf.app_port)

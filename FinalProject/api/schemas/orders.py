@@ -12,6 +12,7 @@ class OrderBase(BaseModel):
     status: Optional[str] = None
     tracking_number: Optional[str] = None
     description: Optional[str] = None
+    user_id: Optional[int] = None
 
 
 class OrderCreate(OrderBase):
